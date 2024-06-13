@@ -36,6 +36,7 @@ transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75
 shadow_enabled = true
 
 [node name="space" parent="." instance=ExtResource("1_2t5a6")]
+visible = false
 scale = Vector2(0.5, 0.5)
 
 [node name="timeframe" parent="." instance=ExtResource("4_vcmhj")]

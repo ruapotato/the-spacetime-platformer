@@ -67,11 +67,11 @@ func get_best_time_index():
 	#if last_time_index > len(personal_timeline.keys()):
 	#	last_time_index -= 1
 	#	return(get_best_time_index())
-	if last_time_index not in personal_timeline.keys():
+	if last_time_index >= len(personal_timeline.keys()):
 		if last_time_index == 0:
 			#draw_self()
 			return(personal_timeline.keys()[-1])
-		last_time_index = 0
+		last_time_index -= 1
 		return(get_best_time_index())
 	var best_yet = personal_timeline.keys()[last_time_index]
 	if best_yet < space_time.player_time_index:
