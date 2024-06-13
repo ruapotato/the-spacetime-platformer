@@ -46,6 +46,46 @@ texture = SubResource("NoiseTexture2D_id8lc")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource("RectangleShape2D_nhhti")
 
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+position = Vector2(1600, 300)
+script = ExtResource("1_nuyhc")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D3"]
+texture = SubResource("NoiseTexture2D_id8lc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
+shape = SubResource("RectangleShape2D_nhhti")
+
+[node name="StaticBody2D5" type="StaticBody2D" parent="."]
+position = Vector2(2000, 600)
+script = ExtResource("1_nuyhc")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D5"]
+texture = SubResource("NoiseTexture2D_id8lc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D5"]
+shape = SubResource("RectangleShape2D_nhhti")
+
+[node name="StaticBody2D6" type="StaticBody2D" parent="."]
+position = Vector2(2000, 900)
+script = ExtResource("1_nuyhc")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D6"]
+texture = SubResource("NoiseTexture2D_id8lc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D6"]
+shape = SubResource("RectangleShape2D_nhhti")
+
+[node name="StaticBody2D7" type="StaticBody2D" parent="."]
+position = Vector2(2200, 750)
+script = ExtResource("1_nuyhc")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D7"]
+texture = SubResource("NoiseTexture2D_id8lc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D7"]
+shape = SubResource("RectangleShape2D_nhhti")
+
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
 position = Vector2(507.57, 1128.64)
 script = ExtResource("1_nuyhc")
@@ -54,6 +94,16 @@ script = ExtResource("1_nuyhc")
 texture = SubResource("NoiseTexture2D_id8lc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource("RectangleShape2D_nhhti")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="."]
+position = Vector2(507.57, 300)
+script = ExtResource("1_nuyhc")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D4"]
+texture = SubResource("NoiseTexture2D_id8lc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
 shape = SubResource("RectangleShape2D_nhhti")
 
 [node name="gooman" parent="." instance=ExtResource("2_i6jyh")]

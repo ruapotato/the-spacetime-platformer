@@ -20,7 +20,7 @@ func get_space_time(test=self):
 		return(get_space_time(momma))
 func update_player_image():
 	player_image.global_position.x = player.global_position.x * space_time.x_scale
-	player_image.global_position.y = -player.global_position.y * space_time.y_scale
+	player_image.global_position.y = -player.global_position.y * space_time.y_scale + 10
 	#print(player_image.global_position)
 	#print(player)
 # Called every frame. 'delta' is the elapsed time since the previous frame.

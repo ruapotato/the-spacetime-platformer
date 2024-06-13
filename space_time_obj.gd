@@ -20,7 +20,7 @@ func _ready():
 	ttl = space_time.max_level_time
 	voxels = space_time.make_voxel_space()
 	vt = voxels.get_voxel_tool()
-	print(name)
+	#print(name)
 	if "Sprite2D" in name:
 		sprite = self
 		body = get_parent()
@@ -68,7 +68,7 @@ func draw_self():
 	#print()
 
 func get_best_time_index():
-	print(last_time_index)
+	#print(last_time_index)
 	if last_time_index >= len(personal_timeline.keys()):
 		if last_time_index == 0:
 			#draw_self()
@@ -95,12 +95,14 @@ func draw_timeframe():
 	#print()
 	#print(personal_timeline.keys())
 
-func just_before(this_time_index):
+func after(this_time_index, by=10):
 	var key_index = personal_timeline.keys().find(this_time_index)
-	return(personal_timeline.keys()[key_index -1])
+	if key_index +by >= len(personal_timeline.keys()):
+		return(after(this_time_index, by-1))
+	return(personal_timeline.keys()[key_index +by])
 
 func delete_timeline_forward():
-	var time_index = just_before(get_best_time_index())
+	var time_index = after(get_best_time_index())
 	last_time_index = time_index
 	time_index = personal_timeline.keys().find(time_index)
 	var data_to_remove = []
@@ -138,7 +140,7 @@ func record_time_index(z_time, voxel_box):
 	if len(personal_timeline) > 0 and z_time > personal_timeline.keys()[-1]:
 		retore_point(get_best_time_index())
 		delete_timeline_forward()
-		print("Shreenk")
+		#print("Shreenk")
 	
 	if body is StaticBody2D:
 		#personal_timeline[z_time] = [body.global_position, body.global_rotation, Vector3(0,0,0), voxel_box]

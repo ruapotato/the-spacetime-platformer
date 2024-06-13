@@ -98,6 +98,10 @@ func just_before(this_time_index):
 	var key_index = personal_timeline.keys().find(this_time_index)
 	return(personal_timeline.keys()[key_index -1])
 
+func just_after(this_time_index):
+	var key_index = personal_timeline.keys().find(this_time_index)
+	return(personal_timeline.keys()[key_index +1])
+
 func delete_timeline_forward():
 	var time_index = just_before(get_best_time_index())
 	last_time_index = personal_timeline.keys().find(time_index)
@@ -108,6 +112,8 @@ func delete_timeline_forward():
 		#print("Remove " + str(i))
 	#print("Delete from: ")
 	#print(data_to_remove)
+	#data_to_remove.pop_back()
+	#data_to_remove.pop_back()
 	vt.mode = VoxelTool.MODE_REMOVE
 	for dead_box in data_to_remove:
 		vt.do_box(personal_timeline[dead_box][-1][0], personal_timeline[dead_box][-1][1])
@@ -127,7 +133,7 @@ func record_time_index(z_time, voxel_box):
 	if len(personal_timeline) > 0 and z_time > personal_timeline.keys()[-1]:
 		retore_point(get_best_time_index())
 		delete_timeline_forward()
-		print("Shreenk")
+		#print("Shreenk")
 	personal_timeline[z_time] = [body.global_position, body.global_rotation, Vector3(0,0,0), voxel_box]
 
 

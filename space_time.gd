@@ -50,7 +50,7 @@ func _physics_process(delta):
 		z_time_index += delta * space_speed
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	#print(Engine.get_frames_per_second())
+	print(Engine.get_frames_per_second())
 	player_time_index = player.global_position.z
 	if z_time_index + player_time_index > render_range:
 		rendering = false
