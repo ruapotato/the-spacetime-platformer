@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://byg0hyo50qmag"]
+
+[ext_resource type="Script" path="res://John.gd" id="1_bxkwn"]
+[ext_resource type="Script" path="res://space_time_obj.gd" id="2_sycwy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wt14d"]
+radius = 14.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_pcydd"]
+frequency = 0.0185
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mrlp7"]
+width = 22
+height = 22
+noise = SubResource("FastNoiseLite_pcydd")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0p14x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xhkkh"]
+size = Vector2(8, 8)
+
+[node name="John" type="CharacterBody2D"]
+script = ExtResource("1_bxkwn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_wt14d")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("NoiseTexture2D_mrlp7")
+script = ExtResource("2_sycwy")
+
+[node name="john_hit_box_Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="john_hit_box_Area2D"]
+shape = SubResource("CircleShape2D_0p14x")
+
+[node name="ground_left_Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ground_left_Area2D"]
+position = Vector2(-15, 13)
+shape = SubResource("RectangleShape2D_xhkkh")
+
+[node name="ground_right_Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ground_right_Area2D"]
+position = Vector2(15, 13)
+shape = SubResource("RectangleShape2D_xhkkh")
+
+[connection signal="area_entered" from="john_hit_box_Area2D" to="." method="_on_hit_box_area_2d_area_entered"]

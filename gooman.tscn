@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://bl5kpxv3ro55g"]
+
+[ext_resource type="Script" path="res://gooman.gd" id="1_8jttt"]
+[ext_resource type="Script" path="res://space_time_obj.gd" id="3_eoqjg"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wt14d"]
+radius = 13.0384
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_pcydd"]
+frequency = 0.0185
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mrlp7"]
+width = 22
+height = 22
+noise = SubResource("FastNoiseLite_pcydd")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0p14x"]
+radius = 17.0294
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xhkkh"]
+size = Vector2(8, 8)
+
+[node name="gooman" type="CharacterBody2D"]
+script = ExtResource("1_8jttt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_wt14d")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("NoiseTexture2D_mrlp7")
+script = ExtResource("3_eoqjg")
+
+[node name="gooman_hit_box_Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="gooman_hit_box_Area2D"]
+shape = SubResource("CircleShape2D_0p14x")
+
+[node name="ground_left_Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ground_left_Area2D"]
+position = Vector2(-15, 13)
+shape = SubResource("RectangleShape2D_xhkkh")
+
+[node name="ground_right_Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ground_right_Area2D"]
+position = Vector2(15, 13)
+shape = SubResource("RectangleShape2D_xhkkh")
+
+[connection signal="area_entered" from="gooman_hit_box_Area2D" to="." method="_on_hit_box_area_2d_area_entered"]

@@ -1,29 +1,15 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+The Spacetime Platformer. Explore 2d space, with the 3rd dimension being time you can freely move through. 
 
 ### What is this repository for? ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Early build, not playable
+* [Part of:](https://itch.io/jam/free-software-purism-game-jam)
 
 ### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* Download and run the Linux or Windows bin.
 
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+### GPL3 by David Hamner 2024
+Everything here is by David Hamner and is freely reusable under the GPL3 license

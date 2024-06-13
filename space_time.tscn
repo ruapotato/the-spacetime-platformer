@@ -1,0 +1,52 @@
+[gd_scene load_steps=11 format=3 uid="uid://idabowol76i"]
+
+[ext_resource type="PackedScene" uid="uid://lrxoh8iqmrdb" path="res://space.tscn" id="1_2t5a6"]
+[ext_resource type="Script" path="res://space_time.gd" id="1_6mgex"]
+[ext_resource type="PackedScene" uid="uid://34320sdfkrbu" path="res://player.tscn" id="3_j1mdw"]
+[ext_resource type="PackedScene" uid="uid://bki23ou1swwd4" path="res://timeframe.tscn" id="4_vcmhj"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1fm81"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_mgrof"]
+sky_material = SubResource("ProceduralSkyMaterial_1fm81")
+
+[sub_resource type="Environment" id="Environment_i4cvj"]
+background_mode = 2
+sky = SubResource("Sky_mgrof")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="VoxelStreamMemory" id="VoxelStreamMemory_db5b4"]
+
+[sub_resource type="VoxelMesherTransvoxel" id="VoxelMesherTransvoxel_lgvc0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_66kx7"]
+albedo_color = Color(0.226546, 0.471776, 0.527527, 1)
+
+[node name="space_time" type="Node3D"]
+script = ExtResource("1_6mgex")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_i4cvj")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="space" parent="." instance=ExtResource("1_2t5a6")]
+scale = Vector2(0.5, 0.5)
+
+[node name="timeframe" parent="." instance=ExtResource("4_vcmhj")]
+
+[node name="voxels" type="Node3D" parent="."]
+
+[node name="VoxelTerrain" type="VoxelTerrain" parent="."]
+visible = false
+stream = SubResource("VoxelStreamMemory_db5b4")
+mesher = SubResource("VoxelMesherTransvoxel_lgvc0")
+material_override = SubResource("StandardMaterial3D_66kx7")
+
+[node name="player" parent="." instance=ExtResource("3_j1mdw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.32055, 0, -10.0221)

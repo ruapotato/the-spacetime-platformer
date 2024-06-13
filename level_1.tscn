@@ -1,0 +1,66 @@
+[gd_scene load_steps=10 format=3 uid="uid://duu81u2ixrkv7"]
+
+[ext_resource type="Script" path="res://space_time_obj.gd" id="1_nuyhc"]
+[ext_resource type="PackedScene" uid="uid://bl5kpxv3ro55g" path="res://gooman.tscn" id="2_i6jyh"]
+[ext_resource type="PackedScene" uid="uid://byg0hyo50qmag" path="res://john.tscn" id="3_seex5"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gg5po"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pcw2r"]
+width = 25
+height = 25
+noise = SubResource("FastNoiseLite_gg5po")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m8fca"]
+size = Vector2(25, 25)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6xp6o"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_id8lc"]
+width = 1000
+height = 25
+noise = SubResource("FastNoiseLite_6xp6o")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nhhti"]
+size = Vector2(1000, 25)
+
+[node name="Level_1" type="Node2D"]
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2(1029.82, -1000)
+script = ExtResource("1_nuyhc")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
+texture = SubResource("NoiseTexture2D_pcw2r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource("RectangleShape2D_m8fca")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(1600, 1128.64)
+script = ExtResource("1_nuyhc")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
+texture = SubResource("NoiseTexture2D_id8lc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_nhhti")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(507.57, 1128.64)
+script = ExtResource("1_nuyhc")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D2"]
+texture = SubResource("NoiseTexture2D_id8lc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource("RectangleShape2D_nhhti")
+
+[node name="gooman" parent="." instance=ExtResource("2_i6jyh")]
+position = Vector2(1207, 944)
+
+[node name="gooman2" parent="." instance=ExtResource("2_i6jyh")]
+position = Vector2(1874, 912)
+
+[node name="John" parent="." instance=ExtResource("3_seex5")]
+position = Vector2(48, 983)

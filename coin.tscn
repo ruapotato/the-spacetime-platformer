@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://c32wv71wqculp"]
+
+[ext_resource type="Script" path="res://coin.gd" id="1_5x2uf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m0frt"]
+
+[sub_resource type="Gradient" id="Gradient_wqo7t"]
+offsets = PackedFloat32Array(0, 0.545455)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2cmpe"]
+frequency = 0.1766
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_68fo3"]
+width = 15
+height = 15
+color_ramp = SubResource("Gradient_wqo7t")
+noise = SubResource("FastNoiseLite_2cmpe")
+
+[node name="coin" type="Area2D"]
+script = ExtResource("1_5x2uf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_m0frt")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("NoiseTexture2D_68fo3")
