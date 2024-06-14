@@ -1,7 +1,6 @@
 extends Node3D
 
 @onready var coin = preload("res://coin.tscn")
-@onready var voxels = $voxels
 @onready var space = $space
 @onready var player = $player
 var level
@@ -18,19 +17,9 @@ var render_range = 40
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	vt = $VoxelTerrain.get_voxel_tool()
-	vt.mode = VoxelTool.MODE_ADD
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	level = space.get_children()[0]
 
-#create voxel space and return it.
-func make_voxel_space():
-	var new_vt_space = VoxelTerrain.new()
-	new_vt_space.stream = VoxelStreamMemory.new()
-	new_vt_space.mesher = VoxelMesherTransvoxel.new()
-	new_vt_space.max_view_distance = 222
-	$voxels.add_child(new_vt_space)
-	return(new_vt_space)
 
 func add_coin(loc):
 	z_time_index = -player_time_index

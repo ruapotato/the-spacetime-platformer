@@ -31,10 +31,6 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	if direction:
@@ -73,3 +69,16 @@ func _process(delta):
 #			area.get_parent().direction = direction * -1
 #			area.get_parent().just_hit = 1
 #			just_hit = 1
+
+
+func _on_coin_search_area_2d_area_entered(area):
+	# Handle jump.
+	print(area.name)
+	if "birth_date" in area:
+		print("coin")
+		print(-area.birth_date)
+		print(space_time.z_time_index)
+		if -area.birth_date > space_time.z_time_index:
+			return
+		if is_on_floor():
+			velocity.y = JUMP_VELOCITY
