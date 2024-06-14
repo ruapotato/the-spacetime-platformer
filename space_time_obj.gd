@@ -14,12 +14,16 @@ var last_time_index = 0
 var spaces_to_remove = []
 var running = true
 var last_speed
+var static_body = null
+var space
+var level
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	space_time =  get_space_time()
+	space = space_time.find_child("space")
+	level = space.get_children()[0]
 	ttl = space_time.max_level_time
-	voxels = space_time.make_voxel_space()
-	vt = voxels.get_voxel_tool()
+
 	#print(name)
 	if "Sprite2D" in name:
 		sprite = self
@@ -33,6 +37,56 @@ func _ready():
 	# Not sure why the scale is .5
 	timeframe_sprite.scale = Vector2(.5,.5)
 	timeframe.add_child.call_deferred(timeframe_sprite)
+	
+	if body is StaticBody2D:
+		static_body = StaticBody3D.new()
+		var new_box_sin = MeshInstance3D.new()
+		var new_box_shape = CollisionShape3D.new()
+		new_box_sin.mesh = BoxMesh.new()
+		new_box_shape.shape = BoxShape3D.new()
+		
+		
+		new_box_sin.mesh.size.x = float(sprite.texture.width)/world_scale * 2
+		new_box_sin.mesh.size.y = float(sprite.texture.height)/world_scale * 2
+		new_box_sin.mesh.size.z = space_time.render_range * 2
+		new_box_shape.shape.size.x = float(sprite.texture.width)/world_scale * 2
+		new_box_shape.shape.size.y = float(sprite.texture.height)/world_scale * 2
+		new_box_shape.shape.size.z = space_time.render_range * 2
+		print(sprite.texture.height/world_scale)
+		
+		
+		static_body.add_child(new_box_sin)
+		static_body.add_child(new_box_shape)
+		level.add_child.call_deferred(static_body)
+
+		#static_body.global_position
+		#static_body.global_position.x = global_position.x/space_time.x_scale
+		#static_body.global_position.y = global_position.y/space_time.y_scale
+		
+		
+		
+		"""
+		static_body = StaticBody3D.new()
+		var new_shape = CollisionShape3D.new()
+		new_shape.shape = BoxShape3D.new()
+		#new_shape.shape.size.x = sprite.texture.width/world_scale
+		#new_shape.shape.size.y = sprite.texture.height/world_scale
+		#new_shape.shape.size.z = 10
+		static_body.add_child(new_shape)
+		
+		var new_mesh = MeshInstance3D.new()
+		new_mesh.mesh = BoxMesh.new()
+		#new_mesh.mesh.size.x = sprite.texture.width/world_scale
+		#new_mesh.mesh.size.y = sprite.texture.height/world_scale
+		#new_mesh.mesh = new_mesh
+		static_body.add_child(new_mesh)
+		level.add_child(static_body)
+		static_body.global_position.x = global_position.x/space_time.x_scale
+		static_body.global_position.y = global_position.y/space_time.y_scale"""
+		
+	else:
+		voxels = space_time.make_voxel_space()
+		vt = voxels.get_voxel_tool()
 	#print(vt)
 
 
@@ -90,8 +144,11 @@ func get_best_time_index():
 
 func draw_timeframe():
 	#print(get_best_time_index())
-	var timeframe_data = personal_timeline[get_best_time_index()]
-	timeframe_sprite.global_position = timeframe_data[0]
+	if not static_body:
+		var timeframe_data = personal_timeline[get_best_time_index()]
+		timeframe_sprite.global_position = timeframe_data[0]
+	else:
+		timeframe_sprite.global_position = global_position
 	#print()
 	#print(personal_timeline.keys())
 
@@ -178,18 +235,25 @@ func stop_if_too_far():
 			body.velocity = last_speed
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
+func update_pos():
+	#print(static_body.global_position)
+	#static_body.glob
+	static_body.set_deferred("global_position", Vector3(global_position.x/space_time.x_scale,-global_position.y/space_time.y_scale,space_time.player_time_index))
+	#print(static_body.shape)
+	#static_body.global_position.z = space_time.player_time_index
 
 func _physics_process(delta):
-	stop_if_too_far()
-func _process(delta):
+	if not static_body:
+		stop_if_too_far()
+	else:
+		update_pos()
 
-	#body.set_physics_process(space_time.rendering)
-	#stop_if_too_far()
-	#ttl -= delta
-	#if ttl < 0:
-	#	draw_timeframe()
-	#	return
-	clean_up()
-	#if running:
-	draw_self()
-	draw_timeframe()
+	
+func _process(delta):
+	if not static_body:
+		clean_up()
+		#if running:
+		draw_self()
+		draw_timeframe()
+	else:
+		draw_timeframe()

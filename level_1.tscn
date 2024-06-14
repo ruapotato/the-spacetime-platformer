@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://duu81u2ixrkv7"]
+[gd_scene load_steps=12 format=3 uid="uid://duu81u2ixrkv7"]
 
 [ext_resource type="Script" path="res://space_time_obj.gd" id="1_nuyhc"]
 [ext_resource type="PackedScene" uid="uid://bl5kpxv3ro55g" path="res://gooman.tscn" id="2_i6jyh"]
@@ -23,6 +23,14 @@ noise = SubResource("FastNoiseLite_6xp6o")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nhhti"]
 size = Vector2(1000, 25)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5wyc3"]
+width = 50
+height = 50
+noise = SubResource("FastNoiseLite_6xp6o")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p73tw"]
+size = Vector2(50, 50)
 
 [node name="Level_1" type="Node2D"]
 
@@ -85,6 +93,16 @@ texture = SubResource("NoiseTexture2D_id8lc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D7"]
 shape = SubResource("RectangleShape2D_nhhti")
+
+[node name="StaticBody2D8" type="StaticBody2D" parent="."]
+position = Vector2(500, 750)
+script = ExtResource("1_nuyhc")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D8"]
+texture = SubResource("NoiseTexture2D_5wyc3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D8"]
+shape = SubResource("RectangleShape2D_p73tw")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
 position = Vector2(507.57, 1128.64)

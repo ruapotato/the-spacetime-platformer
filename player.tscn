@@ -4,7 +4,7 @@
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_m6o30"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_rrqu4"]
+[sub_resource type="BoxMesh" id="BoxMesh_ggoip"]
 
 [node name="player" type="CharacterBody3D"]
 script = ExtResource("1_styb6")
@@ -13,7 +13,7 @@ script = ExtResource("1_styb6")
 shape = SubResource("SphereShape3D_m6o30")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("SphereMesh_rrqu4")
+mesh = SubResource("BoxMesh_ggoip")
 
 [node name="piv" type="Node3D" parent="."]
 
