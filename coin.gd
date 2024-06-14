@@ -14,12 +14,35 @@ var personal_timeline = {}
 var ttl = 100000
 var last_time_index = 0
 var birth_date = null
+var active_body = null
+var space
+var level
+var spaces_to_remove = []
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	space_time =  get_space_time()
+	space = space_time.find_child("space")
+	level = space.get_children()[0]
 	ttl = space_time.max_level_time
-	voxels = space_time.make_voxel_space()
-	vt = voxels.get_voxel_tool()
+	active_body = StaticBody3D.new()
+	var new_box_sin = MeshInstance3D.new()
+	var new_box_shape = CollisionShape3D.new()
+	new_box_sin.mesh = BoxMesh.new()
+	new_box_shape.shape = BoxShape3D.new()
+	
+	
+	new_box_sin.mesh.size.x = float(sprite.texture.width)/world_scale * 2
+	new_box_sin.mesh.size.y = float(sprite.texture.height)/world_scale * 2
+	new_box_sin.mesh.size.z = 1
+	new_box_shape.shape.size.x = float(sprite.texture.width)/world_scale * 2
+	new_box_shape.shape.size.y = float(sprite.texture.height)/world_scale * 2
+	new_box_shape.shape.size.z = 1
+	print(sprite.texture.height/world_scale)
+	
+	
+	active_body.add_child(new_box_sin)
+	active_body.add_child(new_box_shape)
+	level.add_child.call_deferred(active_body)
 	
 	timeframe = space_time.find_child("timeframe")
 	timeframe_sprite = sprite.duplicate()
@@ -45,19 +68,11 @@ func draw_self():
 	new_box_start_pos.y = -global_position.y/space_time.y_scale
 	new_box_start_pos.z = space_time.get_time_pos()
 	
+	var new_body = active_body.duplicate()
+	level.add_child(new_body)
+	new_body.global_position = new_box_start_pos
 	
-	var new_box_end_pos = new_box_start_pos
-	new_box_end_pos.x -= sprite.texture.width/world_scale
-	new_box_end_pos.y -= sprite.texture.height/world_scale
-	new_box_end_pos.z -= .5
-	vt.mode = VoxelTool.MODE_ADD
-	
-	
-	new_box_start_pos.x += sprite.texture.width/world_scale
-	new_box_start_pos.y += sprite.texture.height/world_scale
-	vt.do_box(new_box_start_pos, new_box_end_pos)
-	
-	record_time_index(new_box_start_pos.z, [new_box_start_pos, new_box_end_pos])
+	record_time_index(new_box_start_pos, new_body)
 	
 	#print(new_box_start_pos)
 	#print(new_box_end_pos)
@@ -114,9 +129,9 @@ func delete_timeline_forward():
 	#print(data_to_remove)
 	#data_to_remove.pop_back()
 	#data_to_remove.pop_back()
-	vt.mode = VoxelTool.MODE_REMOVE
 	for dead_box in data_to_remove:
-		vt.do_box(personal_timeline[dead_box][-1][0], personal_timeline[dead_box][-1][1])
+		spaces_to_remove.append(personal_timeline[dead_box][-1])
+		#vt.do_box(personal_timeline[dead_box][-1][0], personal_timeline[dead_box][-1][1])
 		personal_timeline.erase(dead_box)
 
 func retore_point(point_to_restore):
@@ -129,13 +144,19 @@ func retore_point(point_to_restore):
 		#personal_timeline[z_time] = [body.global_position, body.global_rotation, body.linear_velocity, voxel_box]
 
 
-func record_time_index(z_time, voxel_box):
+func record_time_index(pos, mesh_obj):
+	var z_time = pos.z
 	if len(personal_timeline) > 0 and z_time > personal_timeline.keys()[-1]:
 		retore_point(get_best_time_index())
 		delete_timeline_forward()
 		#print("Shreenk")
-	personal_timeline[z_time] = [body.global_position, body.global_rotation, Vector3(0,0,0), voxel_box]
+	personal_timeline[z_time] = [body.global_position, body.global_rotation, Vector3(0,0,0), mesh_obj]
 
+func clean_up():
+	for i in range(0,2):
+		if spaces_to_remove != []:
+			var needs_removed = spaces_to_remove.pop_front()
+			needs_removed.queue_free()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -150,5 +171,6 @@ func _process(delta):
 		draw_timeframe()
 	else:
 		timeframe_sprite.global_position = Vector2(-1000,-10000)
+	clean_up()
 	draw_self()
 

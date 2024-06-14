@@ -15,6 +15,7 @@ var spaces_to_remove = []
 var running = true
 var last_speed
 var static_body = null
+var active_body = null
 var space
 var level
 # Called when the node enters the scene tree for the first time.
@@ -59,34 +60,27 @@ func _ready():
 		static_body.add_child(new_box_shape)
 		level.add_child.call_deferred(static_body)
 
-		#static_body.global_position
-		#static_body.global_position.x = global_position.x/space_time.x_scale
-		#static_body.global_position.y = global_position.y/space_time.y_scale
-		
-		
-		
-		"""
-		static_body = StaticBody3D.new()
-		var new_shape = CollisionShape3D.new()
-		new_shape.shape = BoxShape3D.new()
-		#new_shape.shape.size.x = sprite.texture.width/world_scale
-		#new_shape.shape.size.y = sprite.texture.height/world_scale
-		#new_shape.shape.size.z = 10
-		static_body.add_child(new_shape)
-		
-		var new_mesh = MeshInstance3D.new()
-		new_mesh.mesh = BoxMesh.new()
-		#new_mesh.mesh.size.x = sprite.texture.width/world_scale
-		#new_mesh.mesh.size.y = sprite.texture.height/world_scale
-		#new_mesh.mesh = new_mesh
-		static_body.add_child(new_mesh)
-		level.add_child(static_body)
-		static_body.global_position.x = global_position.x/space_time.x_scale
-		static_body.global_position.y = global_position.y/space_time.y_scale"""
 		
 	else:
-		voxels = space_time.make_voxel_space()
-		vt = voxels.get_voxel_tool()
+		active_body = StaticBody3D.new()
+		var new_box_sin = MeshInstance3D.new()
+		var new_box_shape = CollisionShape3D.new()
+		new_box_sin.mesh = BoxMesh.new()
+		new_box_shape.shape = BoxShape3D.new()
+		
+		
+		new_box_sin.mesh.size.x = float(sprite.texture.width)/world_scale * 2
+		new_box_sin.mesh.size.y = float(sprite.texture.height)/world_scale * 2
+		new_box_sin.mesh.size.z = 1
+		new_box_shape.shape.size.x = float(sprite.texture.width)/world_scale * 2
+		new_box_shape.shape.size.y = float(sprite.texture.height)/world_scale * 2
+		new_box_shape.shape.size.z = 1
+		print(sprite.texture.height/world_scale)
+		
+		
+		active_body.add_child(new_box_sin)
+		active_body.add_child(new_box_shape)
+		level.add_child.call_deferred(active_body)
 	#print(vt)
 
 
@@ -103,19 +97,13 @@ func draw_self():
 	new_box_start_pos.y = -global_position.y/space_time.y_scale
 	new_box_start_pos.z = space_time.get_time_pos()
 	
+	var new_body = active_body.duplicate()
+	level.add_child(new_body)
+	new_body.global_position = new_box_start_pos
+	#new_body.set_deferred("global_position", new_box_start_pos)
+	#level.add_child.call_deferred(new_body)
 	
-	var new_box_end_pos = new_box_start_pos
-	new_box_end_pos.x -= sprite.texture.width/world_scale
-	new_box_end_pos.y -= sprite.texture.height/world_scale
-	new_box_end_pos.z -= .5
-	vt.mode = VoxelTool.MODE_ADD
-	
-	
-	new_box_start_pos.x += sprite.texture.width/world_scale
-	new_box_start_pos.y += sprite.texture.height/world_scale
-	vt.do_box(new_box_start_pos, new_box_end_pos)
-	
-	record_time_index(new_box_start_pos.z, [new_box_start_pos, new_box_end_pos])
+	record_time_index(new_box_start_pos, new_body)
 	
 	#print(new_box_start_pos)
 	#print(new_box_end_pos)
@@ -160,15 +148,14 @@ func after(this_time_index, by=10):
 
 func delete_timeline_forward():
 	var time_index = after(get_best_time_index())
-	last_time_index = time_index
 	time_index = personal_timeline.keys().find(time_index)
+	last_time_index = time_index
 	var data_to_remove = []
 	for i in range(time_index,len(personal_timeline)):
 		data_to_remove.append(personal_timeline.keys()[i])
 		#print("Remove " + str(i))
 	#print("Delete from: ")
 	#print(data_to_remove)
-	vt.mode = VoxelTool.MODE_REMOVE
 	for dead_box in data_to_remove:
 		spaces_to_remove.append(personal_timeline[dead_box][-1])
 		#vt.do_box(personal_timeline[dead_box][-1][0], personal_timeline[dead_box][-1][1])
@@ -193,7 +180,8 @@ func retore_point(point_to_restore):
 		body.velocity =  point_data[2]
 		#personal_timeline[z_time] = [body.global_position, body.global_rotation, body.velocity, voxel_box]
 
-func record_time_index(z_time, voxel_box):
+func record_time_index(pos, mesh_obj):
+	var z_time = pos.z
 	if len(personal_timeline) > 0 and z_time > personal_timeline.keys()[-1]:
 		retore_point(get_best_time_index())
 		delete_timeline_forward()
@@ -202,37 +190,21 @@ func record_time_index(z_time, voxel_box):
 	if body is StaticBody2D:
 		#personal_timeline[z_time] = [body.global_position, body.global_rotation, Vector3(0,0,0), voxel_box]
 		# Don't delete static bodies
-		personal_timeline[z_time] = [body.global_position, body.global_rotation, Vector3(0,0,0), [Vector3(0,0,0),Vector3(0,0,0)]]
+		personal_timeline[z_time] = [body.global_position, body.global_rotation, Vector3(0,0,0), mesh_obj]
 	if body is RigidBody2D:
-		personal_timeline[z_time] = [body.global_position, body.global_rotation, body.linear_velocity, voxel_box]
+		personal_timeline[z_time] = [body.global_position, body.global_rotation, body.linear_velocity, mesh_obj]
 	if body is CharacterBody2D:
-		personal_timeline[z_time] = [body.global_position, body.global_rotation, body.velocity, voxel_box]
+		personal_timeline[z_time] = [body.global_position, body.global_rotation, body.velocity, mesh_obj]
 
 func clean_up():
 	for i in range(0,2):
 		if spaces_to_remove != []:
 			var needs_removed = spaces_to_remove.pop_front()
-			vt.mode = VoxelTool.MODE_REMOVE
-			vt.do_box(needs_removed[0], needs_removed[1])
+			needs_removed.queue_free()
 			#if len(needs_removed) % 3 != 0:
 			#	clean_up()
 
 
-func stop_if_too_far():
-	if running and not space_time.rendering:
-		running = false
-		if body is RigidBody2D:
-			last_speed = body.linear_velocity
-			body.linear_velocity = Vector2(0,0)
-		if body is CharacterBody2D:
-			last_speed = body.velocity
-			body.velocity = Vector2(0,0)
-	if not running and space_time.rendering:
-		running = true
-		if body is RigidBody2D:
-			body.linear_velocity = last_speed
-		if body is CharacterBody2D:
-			body.velocity = last_speed
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
 func update_pos():
@@ -243,17 +215,15 @@ func update_pos():
 	#static_body.global_position.z = space_time.player_time_index
 
 func _physics_process(delta):
-	if not static_body:
-		stop_if_too_far()
-	else:
+	if static_body:
 		update_pos()
 
 	
 func _process(delta):
-	if not static_body:
+	if active_body:
 		clean_up()
 		#if running:
 		draw_self()
 		draw_timeframe()
-	else:
+	if static_body:
 		draw_timeframe()
