@@ -62,7 +62,9 @@ func _process(delta):
 	if just_hit > 0:
 		just_hit -= delta
 
-#func _on_hit_box_area_2d_area_entered(area):
+func _on_hit_box_area_2d_area_entered(area):
+	if "found_date" in area:
+		area.found_date = -space_time.z_time_index
 #	if "gooman" in area.name:
 #		if just_hit <= 0:
 #			direction *= -1

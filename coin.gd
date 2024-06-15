@@ -14,6 +14,7 @@ var personal_timeline = {}
 var ttl = 100000
 var last_time_index = 0
 var birth_date = null
+var found_date = null
 var active_body = null
 var space
 var level
@@ -62,6 +63,8 @@ func get_space_time(test=self):
 
 func draw_self():
 	if birth_date < space_time.get_time_pos():
+		return
+	if found_date and found_date > space_time.get_time_pos():
 		return
 	var new_box_start_pos = Vector3()
 	new_box_start_pos.x = global_position.x/space_time.x_scale
@@ -169,9 +172,13 @@ func _process(delta):
 	#	draw_timeframe()
 	#	return
 	if birth_date > space_time.player_time_index:
-		draw_timeframe()
-	else:
-		timeframe_sprite.global_position = Vector2(-1000,-10000)
+		print()
+		print(found_date)
+		print(space_time.player_time_index)
+		if found_date < space_time.player_time_index:
+			draw_timeframe()
+		else:
+			timeframe_sprite.global_position = Vector2(-1000,-10000)
 	clean_up()
 	draw_self()
 
