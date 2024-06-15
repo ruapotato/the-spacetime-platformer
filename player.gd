@@ -42,6 +42,11 @@ func _unhandled_input(event):
 	if Input.is_action_just_pressed("add"):
 		space_time.add_coin(global_position)
 
+func stay_in_level():
+	#print(global_position)
+	if global_position.z > 0:
+		global_position.z = 0
+
 func _physics_process(delta):
 	#print(space_time.z_time_index)
 	# Add the gravity.
@@ -62,5 +67,14 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
-
+	
+	stay_in_level()
 	move_and_slide()
+
+
+func _on_collect_area_3d_area_entered(area):
+	if "birth_date" in area.get_parent():
+		if area.get_parent().spawn_cooldown <= 0:
+			area.get_parent().queue_free()
+			space_time.set_time_to_player()
+			print("Kill")

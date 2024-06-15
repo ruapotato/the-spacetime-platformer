@@ -19,13 +19,14 @@ var active_body = null
 var space
 var level
 var spaces_to_remove = []
+var spawn_cooldown = 1
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	space_time =  get_space_time()
 	space = space_time.find_child("space")
 	level = space.get_children()[0]
 	ttl = space_time.max_level_time
-	active_body = StaticBody3D.new()
+	active_body = Area3D.new()
 	var new_box_sin = MeshInstance3D.new()
 	var new_box_shape = CollisionShape3D.new()
 	new_box_sin.mesh = BoxMesh.new()
@@ -43,7 +44,8 @@ func _ready():
 	
 	active_body.add_child(new_box_sin)
 	active_body.add_child(new_box_shape)
-	level.add_child.call_deferred(active_body)
+	#level.add_child.call_deferred(active_body)
+	add_child.call_deferred(active_body)
 	
 	timeframe = space_time.find_child("timeframe")
 	timeframe_sprite = sprite.duplicate()
@@ -72,7 +74,8 @@ func draw_self():
 	new_box_start_pos.z = space_time.get_time_pos()
 	
 	var new_body = active_body.duplicate()
-	level.add_child(new_body)
+	#level.add_child(new_body)
+	add_child(new_body)
 	new_body.global_position = new_box_start_pos
 	
 	record_time_index(new_box_start_pos, new_body)
@@ -164,6 +167,8 @@ func clean_up():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if spawn_cooldown > 0:
+		spawn_cooldown -= delta
 	#if not space_time.rendering:
 	#body.set_physics_process(space_time.rendering)
 	#print(space_time.rendering)
@@ -182,6 +187,8 @@ func _process(delta):
 				draw_timeframe()
 			else:
 				timeframe_sprite.global_position = Vector2(-1000,-10000)
+	else:
+		timeframe_sprite.global_position = Vector2(-1000,-10000)
 	clean_up()
 	draw_self()
 

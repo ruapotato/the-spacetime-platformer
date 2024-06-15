@@ -21,6 +21,9 @@ func _ready():
 	level = space.get_children()[0]
 
 
+func set_time_to_player():
+	z_time_index = float(int(-player_time_index * 4))/4.0
+
 func add_coin(loc):
 	#z_time_index = -player_time_index
 	z_time_index = float(int(-player_time_index * 4))/4.0
