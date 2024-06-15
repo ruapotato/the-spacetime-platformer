@@ -172,13 +172,16 @@ func _process(delta):
 	#	draw_timeframe()
 	#	return
 	if birth_date > space_time.player_time_index:
-		print()
-		print(found_date)
-		print(space_time.player_time_index)
-		if found_date < space_time.player_time_index:
+		#print()
+		#print(found_date)
+		#print(space_time.player_time_index)
+		if not found_date:
 			draw_timeframe()
 		else:
-			timeframe_sprite.global_position = Vector2(-1000,-10000)
+			if found_date < space_time.player_time_index:
+				draw_timeframe()
+			else:
+				timeframe_sprite.global_position = Vector2(-1000,-10000)
 	clean_up()
 	draw_self()
 

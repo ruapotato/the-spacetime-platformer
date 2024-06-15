@@ -11,13 +11,15 @@ var personal_timeline = {}
 var body
 var ttl = 100000
 var last_time_index = 0
-var spaces_to_remove = []
+var reusable_timeline = []
 var running = true
 var last_speed
 var static_body = null
 var active_body = null
 var space
 var level
+var z_time = 0
+var last_z_time = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	space_time =  get_space_time()
@@ -92,14 +94,23 @@ func get_space_time(test=self):
 		return(get_space_time(momma))
 
 func draw_self():
+	#if space_time.get_time_pos() in personal_timeline.keys():
+	#	return
 	var new_box_start_pos = Vector3()
 	new_box_start_pos.x = global_position.x/space_time.x_scale
 	new_box_start_pos.y = -global_position.y/space_time.y_scale
 	new_box_start_pos.z = space_time.get_time_pos()
+	var new_body
 	
-	var new_body = active_body.duplicate()
-	level.add_child(new_body)
-	new_body.global_position = new_box_start_pos
+	if new_box_start_pos.z in personal_timeline.keys():
+		new_body = personal_timeline[new_box_start_pos.z][-1]
+		new_body.global_position = new_box_start_pos
+	#	return
+	else:
+	#if new_box_start_pos.z in reusable_timeline: 
+		new_body = active_body.duplicate()
+		level.add_child(new_body)
+		new_body.global_position = new_box_start_pos
 	#new_body.set_deferred("global_position", new_box_start_pos)
 	#level.add_child.call_deferred(new_body)
 	
@@ -110,7 +121,15 @@ func draw_self():
 	#print()
 
 func get_best_time_index():
-	#print(last_time_index)
+	var guess = float(int(space_time.player_time_index * 4))/4.0
+	#print("time: " + str(guess))
+	if guess not in personal_timeline.keys():
+		#print("poo")
+		return(personal_timeline.keys()[0])
+	#return(personal_timeline.keys()[guess])
+	return(guess)
+	#print(guess)
+
 	if last_time_index >= len(personal_timeline.keys()):
 		if last_time_index == 0:
 			#draw_self()
@@ -134,13 +153,17 @@ func draw_timeframe():
 	#print(get_best_time_index())
 	if not static_body:
 		var timeframe_data = personal_timeline[get_best_time_index()]
+		#print("FRAME!!!")
+		#print(get_best_time_index())
+		#print("FRAMEdone!!!")
 		timeframe_sprite.global_position = timeframe_data[0]
 	else:
 		timeframe_sprite.global_position = global_position
 	#print()
 	#print(personal_timeline.keys())
 
-func after(this_time_index, by=10):
+func after(this_time_index, by=2):
+	return(this_time_index - .25)
 	var key_index = personal_timeline.keys().find(this_time_index)
 	if key_index +by >= len(personal_timeline.keys()):
 		return(after(this_time_index, by-1))
@@ -154,12 +177,14 @@ func delete_timeline_forward():
 	for i in range(time_index,len(personal_timeline)):
 		data_to_remove.append(personal_timeline.keys()[i])
 		#print("Remove " + str(i))
-	#print("Delete from: ")
-	#print(data_to_remove)
+	print("Delete from: ")
+	print(data_to_remove)
 	for dead_box in data_to_remove:
-		spaces_to_remove.append(personal_timeline[dead_box][-1])
+		reusable_timeline.append(dead_box)
+		
+		#personal_timeline[dead_box][-1].queue_free()
 		#vt.do_box(personal_timeline[dead_box][-1][0], personal_timeline[dead_box][-1][1])
-		personal_timeline.erase(dead_box)
+		#personal_timeline.erase(dead_box)
 
 func retore_point(point_to_restore):
 	var point_data = personal_timeline[point_to_restore]
@@ -178,14 +203,26 @@ func retore_point(point_to_restore):
 		body.global_position = point_data[0]
 		body.global_rotation =  point_data[1]
 		body.velocity =  point_data[2]
+		body.state_data = point_data[3]
 		#personal_timeline[z_time] = [body.global_position, body.global_rotation, body.velocity, voxel_box]
 
+
+
+
 func record_time_index(pos, mesh_obj):
-	var z_time = pos.z
+	z_time = pos.z
+	var running_behind = z_time > last_z_time
+	last_z_time = z_time
+	#if len(personal_timeline) > 0:
+		#print(z_time)
+		#print(personal_timeline.keys()[-1])
+		#print()
 	if len(personal_timeline) > 0 and z_time > personal_timeline.keys()[-1]:
-		retore_point(get_best_time_index())
-		delete_timeline_forward()
-		#print("Shreenk")
+		if running_behind:
+			print("Shreenk1")
+			retore_point(get_best_time_index())
+			delete_timeline_forward()
+			print("Shreenk2")
 	
 	if body is StaticBody2D:
 		#personal_timeline[z_time] = [body.global_position, body.global_rotation, Vector3(0,0,0), voxel_box]
@@ -194,13 +231,14 @@ func record_time_index(pos, mesh_obj):
 	if body is RigidBody2D:
 		personal_timeline[z_time] = [body.global_position, body.global_rotation, body.linear_velocity, mesh_obj]
 	if body is CharacterBody2D:
-		personal_timeline[z_time] = [body.global_position, body.global_rotation, body.velocity, mesh_obj]
+		personal_timeline[z_time] = [body.global_position, body.global_rotation, body.velocity, body.state_data.duplicate(true), mesh_obj]
 
 func clean_up():
 	for i in range(0,2):
-		if spaces_to_remove != []:
-			var needs_removed = spaces_to_remove.pop_front()
-			needs_removed.queue_free()
+		if reusable_timeline != []:
+			var needs_removed = reusable_timeline.pop_front()
+			print(needs_removed)
+			needs_removed.global_position = Vector3(0,0,0)
 			#if len(needs_removed) % 3 != 0:
 			#	clean_up()
 
@@ -220,8 +258,9 @@ func _physics_process(delta):
 
 	
 func _process(delta):
+	#print(personal_timeline.keys())
 	if active_body:
-		clean_up()
+		#clean_up()
 		#if running:
 		draw_self()
 		draw_timeframe()

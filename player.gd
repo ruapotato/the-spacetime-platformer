@@ -43,6 +43,7 @@ func _unhandled_input(event):
 		space_time.add_coin(global_position)
 
 func _physics_process(delta):
+	#print(space_time.z_time_index)
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta

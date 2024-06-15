@@ -22,7 +22,8 @@ func _ready():
 
 
 func add_coin(loc):
-	z_time_index = -player_time_index
+	#z_time_index = -player_time_index
+	z_time_index = float(int(-player_time_index * 4))/4.0
 	var new_coin = coin.instantiate()
 	new_coin.birth_date = player_time_index
 	level.add_child(new_coin)
@@ -31,7 +32,7 @@ func add_coin(loc):
 	#new_coin.global_position.z = int(player.global_position.z)
 
 func get_time_pos():
-	return(-z_time_index)
+	return(float(int(-z_time_index * 4))/4.0)
 
 
 func _physics_process(delta):
