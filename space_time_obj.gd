@@ -1,5 +1,7 @@
 extends Node2D
 
+@onready var ground_coloring = preload("res://native/gound.tres")
+
 var space_time
 var voxels
 var vt
@@ -52,6 +54,8 @@ func _ready():
 		new_box_sin.mesh.size.x = float(sprite.texture.width)/world_scale * 2
 		new_box_sin.mesh.size.y = float(sprite.texture.height)/world_scale * 2
 		new_box_sin.mesh.size.z = space_time.render_range * 2
+		new_box_sin.set_surface_override_material(0,ground_coloring)
+		
 		new_box_shape.shape.size.x = float(sprite.texture.width)/world_scale * 2
 		new_box_shape.shape.size.y = float(sprite.texture.height)/world_scale * 2
 		new_box_shape.shape.size.z = space_time.render_range * 2

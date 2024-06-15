@@ -2,6 +2,7 @@ extends Area2D
 
 @onready var sprite = $Sprite2D
 @onready var body = $"."
+@onready var coloring = preload("res://native/coin.tres")
 
 var space_time
 var voxels
@@ -29,13 +30,15 @@ func _ready():
 	active_body = Area3D.new()
 	var new_box_sin = MeshInstance3D.new()
 	var new_box_shape = CollisionShape3D.new()
-	new_box_sin.mesh = BoxMesh.new()
+	new_box_sin.mesh = CylinderMesh.new()
 	new_box_shape.shape = BoxShape3D.new()
 	
 	
-	new_box_sin.mesh.size.x = float(sprite.texture.width)/world_scale * 2
-	new_box_sin.mesh.size.y = float(sprite.texture.height)/world_scale * 2
-	new_box_sin.mesh.size.z = 1
+	new_box_sin.mesh.top_radius    = float(sprite.texture.width)/world_scale 
+	new_box_sin.mesh.bottom_radius = float(sprite.texture.height)/world_scale 
+	new_box_sin.mesh.height = 1
+	new_box_sin.set_surface_override_material(0,coloring)
+	new_box_sin.rotate_x(PI/2)
 	new_box_shape.shape.size.x = float(sprite.texture.width)/world_scale * 2
 	new_box_shape.shape.size.y = float(sprite.texture.height)/world_scale * 2
 	new_box_shape.shape.size.z = 1
