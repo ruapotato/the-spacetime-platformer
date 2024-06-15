@@ -92,6 +92,7 @@ func get_best_time_index():
 	if best_yet < space_time.player_time_index:
 		if last_time_index == 0:
 			return(personal_timeline.keys()[0])
+		#last_time_index /= 2
 		last_time_index -= 1
 		return(get_best_time_index())
 	while best_yet > space_time.player_time_index:

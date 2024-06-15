@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 const SPEED = 100.0
-const JUMP_VELOCITY = -400.0
+const JUMP_VELOCITY = 6
 
 var direction = 1
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -70,15 +70,19 @@ func _process(delta):
 #			area.get_parent().just_hit = 1
 #			just_hit = 1
 
-
-func _on_coin_search_area_2d_area_entered(area):
+func _on_coin_search_area_2d_area_exited(area):
 	# Handle jump.
 	print(area.name)
 	if "birth_date" in area:
 		print("coin")
-		print(-area.birth_date)
-		print(space_time.z_time_index)
+		#print(-area.birth_date)
+		#print(space_time.z_time_index)
 		if -area.birth_date > space_time.z_time_index:
 			return
 		if is_on_floor():
-			velocity.y = JUMP_VELOCITY
+			var jump_velocity = float(area.global_position.y - global_position.y)
+			jump_velocity = jump_velocity / 1
+			print(global_position.y)
+			print(area.global_position.y)
+			print(jump_velocity * JUMP_VELOCITY)
+			velocity.y = jump_velocity * JUMP_VELOCITY

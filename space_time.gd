@@ -5,7 +5,7 @@ extends Node3D
 @onready var player = $player
 var level
 var z_time_index = 0.0
-var space_speed = 14
+var space_speed = 4
 var vt
 var player_time_index = 0.0
 var max_level_time = 150
