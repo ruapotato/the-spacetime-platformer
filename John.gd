@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+@onready var space_time_obj = $Sprite2D
+
 const SPEED = 100.0
 const JUMP_VELOCITY = 6
 
@@ -63,6 +65,10 @@ func _process(delta):
 		just_hit -= delta
 
 func _on_hit_box_area_2d_area_entered(area):
+	#print(area.get_parent())
+	if "can_hurt" in area.get_parent():
+		#print("hurt")
+		space_time_obj.dead_at = -space_time.z_time_index
 	if "found_date" in area:
 		area.found_date = -space_time.z_time_index
 #	if "gooman" in area.name:
@@ -74,7 +80,7 @@ func _on_hit_box_area_2d_area_entered(area):
 
 func _on_coin_search_area_2d_area_exited(area):
 	# Handle jump.
-	print(area.name)
+	#print(area.name)
 	if "birth_date" in area:
 		print("coin")
 		#print(-area.birth_date)
@@ -84,7 +90,7 @@ func _on_coin_search_area_2d_area_exited(area):
 		if is_on_floor():
 			var jump_velocity = float(area.global_position.y - global_position.y)
 			jump_velocity = jump_velocity / 1
-			print(global_position.y)
-			print(area.global_position.y)
-			print(jump_velocity * JUMP_VELOCITY)
+			#print(global_position.y)
+			#print(area.global_position.y)
+			#print(jump_velocity * JUMP_VELOCITY)
 			velocity.y = jump_velocity * JUMP_VELOCITY

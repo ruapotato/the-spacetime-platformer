@@ -22,6 +22,7 @@ var space
 var level
 var z_time = 0
 var last_z_time = 0
+var dead_at = null
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	space_time =  get_space_time()
@@ -59,7 +60,7 @@ func _ready():
 		new_box_shape.shape.size.x = float(sprite.texture.width)/world_scale * 2
 		new_box_shape.shape.size.y = float(sprite.texture.height)/world_scale * 2
 		new_box_shape.shape.size.z = space_time.render_range * 2
-		print(sprite.texture.height/world_scale)
+		#print(sprite.texture.height/world_scale)
 		
 		
 		static_body.add_child(new_box_sin)
@@ -81,7 +82,7 @@ func _ready():
 		new_box_shape.shape.size.x = float(sprite.texture.width)/world_scale * 2
 		new_box_shape.shape.size.y = float(sprite.texture.height)/world_scale * 2
 		new_box_shape.shape.size.z = 1
-		print(sprite.texture.height/world_scale)
+		#print(sprite.texture.height/world_scale)
 		
 		
 		active_body.add_child(new_box_sin)
@@ -181,8 +182,8 @@ func delete_timeline_forward():
 	for i in range(time_index,len(personal_timeline)):
 		data_to_remove.append(personal_timeline.keys()[i])
 		#print("Remove " + str(i))
-	print("Delete from: ")
-	print(data_to_remove)
+	#print("Delete from: ")
+	#print(data_to_remove)
 	for dead_box in data_to_remove:
 		reusable_timeline.append(dead_box)
 		
@@ -223,10 +224,10 @@ func record_time_index(pos, mesh_obj):
 		#print()
 	if len(personal_timeline) > 0 and z_time > personal_timeline.keys()[-1]:
 		if running_behind:
-			print("Shreenk1")
+			#print("Shreenk1")
 			retore_point(get_best_time_index())
 			delete_timeline_forward()
-			print("Shreenk2")
+			#print("Shreenk2")
 	
 	if body is StaticBody2D:
 		#personal_timeline[z_time] = [body.global_position, body.global_rotation, Vector3(0,0,0), voxel_box]
@@ -241,7 +242,7 @@ func clean_up():
 	for i in range(0,2):
 		if reusable_timeline != []:
 			var needs_removed = reusable_timeline.pop_front()
-			print(needs_removed)
+			#print(needs_removed)
 			needs_removed.global_position = Vector3(0,0,0)
 			#if len(needs_removed) % 3 != 0:
 			#	clean_up()
@@ -266,7 +267,12 @@ func _process(delta):
 	if active_body:
 		#clean_up()
 		#if running:
-		draw_self()
-		draw_timeframe()
+		if dead_at and dead_at > -space_time.z_time_index:
+			body.set_deferred("global_position", Vector2(-1000,-1000))
+			print("Dead")
+		else:
+			dead_at = null
+			draw_self()
+			draw_timeframe()
 	if static_body:
 		draw_timeframe()

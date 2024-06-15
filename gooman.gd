@@ -9,6 +9,7 @@ var state_data = {"direction": 1}
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var just_hit = 0
 var ttl
+var can_hurt = true
 
 var space_time
 var space
