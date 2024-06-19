@@ -14,7 +14,7 @@ height = 12
 color_ramp = SubResource("Gradient_vms3c")
 noise = SubResource("FastNoiseLite_2jvyi")
 
-[node name="timeframe" type="Node2D"]
+[node name="timeframe" type="Node3D"]
 script = ExtResource("1_i2jel")
 
 [node name="player_image" type="Sprite2D" parent="."]

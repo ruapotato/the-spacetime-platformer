@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://idabowol76i"]
+[gd_scene load_steps=10 format=3 uid="uid://idabowol76i"]
 
 [ext_resource type="PackedScene" uid="uid://lrxoh8iqmrdb" path="res://space.tscn" id="1_2t5a6"]
 [ext_resource type="Script" path="res://space_time.gd" id="1_6mgex"]
 [ext_resource type="PackedScene" uid="uid://34320sdfkrbu" path="res://player.tscn" id="3_j1mdw"]
 [ext_resource type="PackedScene" uid="uid://bki23ou1swwd4" path="res://timeframe.tscn" id="4_vcmhj"]
+[ext_resource type="Script" path="res://moment.gd" id="5_dt32s"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1fm81"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -17,6 +18,9 @@ background_mode = 2
 sky = SubResource("Sky_mgrof")
 tonemap_mode = 2
 glow_enabled = true
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_x25fo"]
+viewport_path = NodePath("timeframe_veiwpoint")
 
 [node name="space_time" type="Node3D"]
 script = ExtResource("1_6mgex")
@@ -32,9 +36,19 @@ shadow_enabled = true
 visible = false
 scale = Vector2(0.5, 0.5)
 
-[node name="timeframe" parent="." instance=ExtResource("4_vcmhj")]
-
 [node name="voxels" type="Node3D" parent="."]
 
 [node name="player" parent="." instance=ExtResource("3_j1mdw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.32055, 0, -10.0221)
+
+[node name="timeframe_veiwpoint" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(1920, 1080)
+
+[node name="timeframe" parent="timeframe_veiwpoint" instance=ExtResource("4_vcmhj")]
+
+[node name="moment" type="Sprite3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 1, 96, -54, 0)
+cast_shadow = 0
+texture = SubResource("ViewportTexture_x25fo")
+script = ExtResource("5_dt32s")

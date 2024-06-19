@@ -20,7 +20,7 @@ noise = SubResource("FastNoiseLite_pcydd")
 size = Vector2(8, 8)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h3p7i"]
-size = Vector2(9.145, 124.815)
+size = Vector2(7.97277, 62.904)
 
 [node name="John" type="CharacterBody2D"]
 script = ExtResource("1_bxkwn")
@@ -52,8 +52,8 @@ shape = SubResource("RectangleShape2D_xhkkh")
 [node name="coin_search_Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="coin_search_Area2D"]
-position = Vector2(62, -71)
-rotation = 0.470137
+position = Vector2(55, -37)
+rotation = 0.746323
 shape = SubResource("RectangleShape2D_h3p7i")
 
 [connection signal="area_entered" from="john_hit_box_Area2D" to="." method="_on_hit_box_area_2d_area_entered"]

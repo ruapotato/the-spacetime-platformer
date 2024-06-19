@@ -21,9 +21,10 @@ mesh = SubResource("BoxMesh_ggoip")
 [node name="piv" type="Node3D" parent="."]
 
 [node name="SpringArm3D" type="SpringArm3D" parent="piv"]
-spring_length = 2.0
+spring_length = 5.0
 
 [node name="Camera3D" type="Camera3D" parent="piv/SpringArm3D"]
+current = true
 
 [node name="VoxelViewer" type="VoxelViewer" parent="piv/SpringArm3D/Camera3D"]
 view_distance = 222

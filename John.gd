@@ -3,7 +3,7 @@ extends CharacterBody2D
 @onready var space_time_obj = $Sprite2D
 
 const SPEED = 100.0
-const JUMP_VELOCITY = 6
+const JUMP_VELOCITY = 8
 
 var state_data = {"direction": 1}
 # Get the gravity from the project settings to be synced with RigidBody nodes.

@@ -88,9 +88,15 @@ func draw_self():
 	#print()
 
 func get_best_time_index():
-	#if last_time_index > len(personal_timeline.keys()):
-	#	last_time_index -= 1
-	#	return(get_best_time_index())
+	var guess = float(int(space_time.player_time_index * 4))/4.0
+	#print("time: " + str(guess))
+	if guess not in personal_timeline.keys():
+		#print("poo")
+		return(personal_timeline.keys()[0])
+	#return(personal_timeline.keys()[guess])
+	return(guess)
+	
+	
 	if last_time_index >= len(personal_timeline.keys()):
 		if last_time_index == 0:
 			#draw_self()

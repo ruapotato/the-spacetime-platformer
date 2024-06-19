@@ -1,6 +1,4 @@
-extends Node3D
-
-@onready var player_image = $player_image
+extends Sprite3D
 var space_time
 var space
 var level
@@ -12,19 +10,16 @@ func _ready():
 	level = space.get_children()[0]
 	player = space_time.find_child("player")
 
+
+
 func get_space_time(test=self):
 	var momma = test.get_parent()
 	if momma.name == "space_time":
 		return(momma)
 	else:
 		return(get_space_time(momma))
-func update_player_image():
-	player_image.global_position.x = player.global_position.x * space_time.x_scale
-	player_image.global_position.y = -player.global_position.y * space_time.y_scale
-	#print(player_image.global_position)
-	#print(player)
+		
+		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	update_player_image()
-	
-#	print(level.name)
+	global_position.z = space_time.player_time_index

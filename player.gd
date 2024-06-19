@@ -3,12 +3,12 @@ extends CharacterBody3D
 @onready var piv = $piv
 @onready var spring_arm = $piv/SpringArm3D
 const SPEED = 8.0
-const JUMP_VELOCITY = 7
+const JUMP_VELOCITY = 8.5
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var mouse_sensitivity = .0035
-var max_zoom = 4.75
+var max_zoom = 25
 var min_zoom = 0
 
 var space_time
@@ -44,8 +44,8 @@ func _unhandled_input(event):
 
 func stay_in_level():
 	#print(global_position)
-	if global_position.z > 0:
-		global_position.z = 0
+	if global_position.z > -1:
+		global_position.z = -1
 
 func _physics_process(delta):
 	#print(space_time.z_time_index)
@@ -75,6 +75,7 @@ func _physics_process(delta):
 func _on_collect_area_3d_area_entered(area):
 	if "birth_date" in area.get_parent():
 		if area.get_parent().spawn_cooldown <= 0:
+			area.get_parent().timeframe_sprite.queue_free()
 			area.get_parent().queue_free()
 			space_time.set_time_to_player()
 			print("Kill")

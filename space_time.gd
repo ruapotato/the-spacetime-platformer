@@ -11,7 +11,7 @@ var player_time_index = 0.0
 var max_level_time = 150
 var rendering = true
 var x_scale = 10
-var y_scale = 20
+var y_scale = 10
 var render_range = 40
 
 
