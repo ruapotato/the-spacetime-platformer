@@ -1,6 +1,9 @@
 extends Node2D
 
 @onready var ground_coloring = preload("res://native/gound.tres")
+@onready var coloring = preload("res://native/gound.tres")
+@onready var john_coloring = preload("res://native/john.tres")
+@onready var gooman_coloring = preload("res://native/gooman.tres")
 
 var space_time
 var voxels
@@ -23,6 +26,7 @@ var level
 var z_time = 0
 var last_z_time = 0
 var dead_at = null
+var last_spawn_point = Vector3(0,0,0)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	space_time =  get_space_time()
@@ -79,6 +83,10 @@ func _ready():
 		new_box_sin.mesh.size.x = float(sprite.texture.width)/world_scale * 2
 		new_box_sin.mesh.size.y = float(sprite.texture.height)/world_scale * 2
 		new_box_sin.mesh.size.z = 1
+		if body.name == "John":
+			new_box_sin.set_surface_override_material(0,john_coloring)
+		else:
+			new_box_sin.set_surface_override_material(0,gooman_coloring)
 		new_box_shape.shape.size.x = float(sprite.texture.width)/world_scale * 2
 		new_box_shape.shape.size.y = float(sprite.texture.height)/world_scale * 2
 		new_box_shape.shape.size.z = 1
@@ -116,6 +124,8 @@ func draw_self():
 		new_body = active_body.duplicate()
 		level.add_child(new_body)
 		new_body.global_position = new_box_start_pos
+		new_body.look_at(last_spawn_point)
+		last_spawn_point = new_box_start_pos
 	#new_body.set_deferred("global_position", new_box_start_pos)
 	#level.add_child.call_deferred(new_body)
 	

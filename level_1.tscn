@@ -33,6 +33,7 @@ noise = SubResource("FastNoiseLite_6xp6o")
 size = Vector2(50, 50)
 
 [node name="Level_1" type="Node2D"]
+position = Vector2(16, -187)
 
 [node name="RigidBody2D" type="RigidBody2D" parent="."]
 position = Vector2(1029.82, -1000)
@@ -45,7 +46,7 @@ texture = SubResource("NoiseTexture2D_pcw2r")
 shape = SubResource("RectangleShape2D_m8fca")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(1600, 1128.64)
+position = Vector2(1560, 230.64)
 script = ExtResource("1_nuyhc")
 
 [node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
@@ -54,48 +55,8 @@ texture = SubResource("NoiseTexture2D_id8lc")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource("RectangleShape2D_nhhti")
 
-[node name="StaticBody2D3" type="StaticBody2D" parent="."]
-position = Vector2(1600, 300)
-script = ExtResource("1_nuyhc")
-
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D3"]
-texture = SubResource("NoiseTexture2D_id8lc")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
-shape = SubResource("RectangleShape2D_nhhti")
-
-[node name="StaticBody2D5" type="StaticBody2D" parent="."]
-position = Vector2(2000, 600)
-script = ExtResource("1_nuyhc")
-
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D5"]
-texture = SubResource("NoiseTexture2D_id8lc")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D5"]
-shape = SubResource("RectangleShape2D_nhhti")
-
-[node name="StaticBody2D6" type="StaticBody2D" parent="."]
-position = Vector2(2000, 900)
-script = ExtResource("1_nuyhc")
-
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D6"]
-texture = SubResource("NoiseTexture2D_id8lc")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D6"]
-shape = SubResource("RectangleShape2D_nhhti")
-
-[node name="StaticBody2D7" type="StaticBody2D" parent="."]
-position = Vector2(2200, 750)
-script = ExtResource("1_nuyhc")
-
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D7"]
-texture = SubResource("NoiseTexture2D_id8lc")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D7"]
-shape = SubResource("RectangleShape2D_nhhti")
-
 [node name="StaticBody2D8" type="StaticBody2D" parent="."]
-position = Vector2(500, 750)
+position = Vector2(460, -148)
 script = ExtResource("1_nuyhc")
 
 [node name="Sprite2D" type="Sprite2D" parent="StaticBody2D8"]
@@ -105,7 +66,7 @@ texture = SubResource("NoiseTexture2D_5wyc3")
 shape = SubResource("RectangleShape2D_p73tw")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
-position = Vector2(507.57, 1128.64)
+position = Vector2(467.57, 230.64)
 script = ExtResource("1_nuyhc")
 
 [node name="Sprite2D" type="Sprite2D" parent="StaticBody2D2"]
@@ -114,21 +75,11 @@ texture = SubResource("NoiseTexture2D_id8lc")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
 shape = SubResource("RectangleShape2D_nhhti")
 
-[node name="StaticBody2D4" type="StaticBody2D" parent="."]
-position = Vector2(507.57, 300)
-script = ExtResource("1_nuyhc")
-
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D4"]
-texture = SubResource("NoiseTexture2D_id8lc")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
-shape = SubResource("RectangleShape2D_nhhti")
-
 [node name="gooman" parent="." instance=ExtResource("2_i6jyh")]
-position = Vector2(1207, 944)
+position = Vector2(1853, 175)
 
 [node name="gooman2" parent="." instance=ExtResource("2_i6jyh")]
-position = Vector2(1874, 912)
+position = Vector2(1244, 178)
 
 [node name="John" parent="." instance=ExtResource("3_seex5")]
-position = Vector2(48, 983)
+position = Vector2(8, 85)
